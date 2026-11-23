@@ -16,7 +16,7 @@ National Highways' WebTRIS counts can show whether roads are busier than normal,
 - **Live data:** the only source of the same counters day by day is NTIS, National Highways' live system. It needs an approved subscription and covers England's motorways and major A-roads only.
 - **The rest of the UK:** no open daily counts exist for Wales, Scotland or Northern Ireland. TomTom, INRIX and HERE cover every road live, but they sell speed and congestion, not counts.
 - **The test:** pull daily totals for every English counter from January 2018 to June 2026, then replay past forecasts with and without the feature.
-- **The decision:** if traffic known by the next morning would not have lowered forecast error, stop. If it would, pursue NTIS and build for England once WebTRIS restarts.
+- **The decision:** if traffic known by the next morning would not meaningfully cut forecast error for any day from D+0 to D+7, stop. If it would, pursue NTIS and build for England once WebTRIS restarts.
 
 ## Glossary
 
@@ -192,7 +192,7 @@ The test must use only data that would have existed when each forecast was made.
 - **Two runs:** a next-day run, as if each day's data arrived the following morning, which is what NTIS would give. And an as-published run, with WebTRIS's real delay of one to two months.
 - **Normals from the past only:** each year's normals use earlier years, so the test never sees the future.
 - **The right statistical test:** comparing a model with the same model plus extra inputs needs a Clark-West test. The common Diebold-Mariano test misleads in that case.
-- **Pass marks set before the run:** proposed 1% lower error to keep the feature, and 2% lower at D+0 to D+2 to justify a daily feed.
+- **Pass mark set before the run:** the next-day run must meaningfully cut error for any day ahead, from D+0 to D+7. Agree what counts as meaningful before the run.
 - **No prior evidence either way:** we found no published study of traffic predicting breakdown demand. A study of Swiss ambulance calls found traffic added nothing beyond the hour of day.
 
 Sources: [Forecasting: Principles and Practice](https://otexts.com/fpp3/regression.html#sec-forecasting-regression), [nested-model forecast tests](https://arxiv.org/abs/2008.08387), [Swiss ambulance study](https://arxiv.org/abs/2501.03111).
@@ -210,7 +210,7 @@ flowchart TD
     end
     subgraph pause["During the pause: Dec 2026 to Jan 2027"]
         bt["Run the backtest twice:<br/>next-day run and as-published run"]
-        gate{"Decision point:<br/>does the next-day run cut error<br/>2% at D+0 to D+2?"}
+        gate{"Decision point:<br/>does the next-day run meaningfully<br/>cut error for any day, D+0 to D+7?"}
     end
     stop["Stop: no traffic source<br/>would help D+0 to D+7"]
     subgraph after["After the restart: from about Jan 2027"]
@@ -259,7 +259,7 @@ Pulling the sample and writing to National Highways can both start now; nothing 
 - [ ] Pull the sample: daily totals and quality for every English counter, January 2018 to June 2026.
 - [ ] Ask National Highways whether the AA can subscribe to NTIS, when WebTRIS restarts, and whether July 2026 onwards will be filled in. The WebTRIS team is at NetworkAnalysisandStatistics@nationalhighways.co.uk.
 - [ ] Ask a Databricks account admin to allow webtris.nationalhighways.co.uk for serverless compute.
-- [ ] Agree the pass marks before running the test.
+- [ ] Agree what counts as a meaningful cut in error before running the test.
 - [ ] Reorder the build spec so the sample test comes first.
 
 **Open questions**

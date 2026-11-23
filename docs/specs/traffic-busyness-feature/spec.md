@@ -203,10 +203,12 @@ large to be test fixtures.
       the backtest's usual error measure.
     - **Test:** a Clark-West test for each horizon on errors pooled across NCAs, one-sided, at
       the 5% level.
-    - **Proposed keep rule:** the `webtris` version lowers pooled error by at least 1%, and
-      the test rejects for at least half the horizons.
-    - **Proposed rule for pursuing a daily feed:** the `daily` version lowers pooled error by at
-      least 2% at D+0 to D+2, and the test rejects at each of them.
+    - **Rule for pursuing a daily feed:** the `daily` version meaningfully lowers pooled
+      error for any horizon from D+0 to D+7, and the test rejects there.
+    - **Rule for keeping the WebTRIS feature:** the `webtris` version also meaningfully
+      lowers pooled error.
+    - **Meaningful:** the size of cut that counts is agreed and recorded in the plan before
+      the first run.
 25. As a diagnostic, not a forecast test, the plan reports the correlation by NCA between the
     baseline model's daily errors and the same day's `TR_RATIO`. If busyness and demand
     errors are unrelated even on the same day, that is worth knowing before reading the
@@ -317,7 +319,7 @@ then site.
 3. Which schema: `research_forecasting.traffic`, as the brief suggests?
 4. The outbound route (TB-102) blocks the backfill. Parsing, rules and tests can be built
    now against the fixtures.
-5. Are the proposed value-test margins (1% to keep, 2% to pursue a daily feed) right? (R24)
+5. What size of error cut counts as meaningful? (R24)
 6. Should the code live in this repository (assumed here) or beside Hourly Forecasting?
 7. Which region partitions besides NCA are needed first (PGA, cluster)?
 

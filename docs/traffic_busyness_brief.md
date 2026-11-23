@@ -221,11 +221,13 @@ trend are the useful signals.
 2. *WebTRIS as published:* using `TR_AVAILABLE_FROM`. This measures what we can
    have today.
 
-**Worth keeping if** adding the features to the LASSO candidate pool lowers
-forecast error in the usual backtest by the agreed margin, judged with a test
-built for nested models (Clark-West, pooled across NCAs). If the daily version
-gains nothing, no traffic source will help D+0–7, and we stop. If the daily
-version gains but the WebTRIS version does not, that makes the case for NTIS.
+**Worth keeping if** adding the features to the LASSO candidate pool meaningfully
+cuts forecast error for any day ahead from D+0 to D+7 in the usual backtest,
+judged with a test built for nested models (Clark-West, pooled across NCAs).
+What counts as meaningful is agreed before the run. If the daily version gives
+no meaningful cut for any day, no traffic source will help D+0–7, and we stop.
+If the daily version gains but the WebTRIS version does not, that makes the case
+for NTIS.
 
 WebTRIS has no data after 30 June 2026, so the backtest runs Sep 2025 – Jun 2026
 (English NCAs, D+0–7) unless the missing months arrive first.
