@@ -62,7 +62,7 @@ Full findings, with sources: [`docs/research/traffic-busyness-feature.md`](resea
 | Old R tool | New feature |
 | --- | --- |
 | National, monthly | Any REGION × PERIOD (NCA, PGA, cluster; hour, 4-block, day) |
-| Traffic ÷ licensed vehicles | Traffic ÷ the same sites' normal traffic (busyness ratio). Licensed vehicles kept only for the long-term trend |
+| Traffic ÷ licensed vehicles | Traffic ÷ the same sites' normal traffic (busyness ratio). Licensed vehicles dropped: we run only hourly and daily models |
 | Fills gaps and treats zeros as missing | Keeps real zeros, flags gaps, never makes up values |
 | Site list changes from run to run | Each ratio compares a site only with its own normal, so a changing site list does not bias it |
 | CSV, RDS and PDF on a laptop | Delta tables in `research_forecasting`, run as a job |
@@ -114,7 +114,7 @@ Schema to be decided (e.g. `research_forecasting.traffic`).
 | `traffic_flow_hourly` | site × hour | Sum of 15-min volumes, plus how many of the 4 slots had data. Local and UTC hour. Flags for clock-change hours and faulty site-days |
 | `traffic_flow_normals_hourly` | site × date × hour × version | What "normal" looks like for that site: the median of the same weekday and hour within 14 days of that date, in each of the three previous years. Leaves out bank holidays, 24 Dec to 1 Jan, faulty days and COVID (Mar 2020 – Jul 2021). Bank holidays and Christmas days compare with the same day in earlier years. Rebuilt each year (version = year), so a normal never uses data from its own year or later |
 | `traffic_load_log` | request | Which site-date ranges were requested, when, the HTTP status and the rows returned. Makes loads repeatable and shows what is missing |
-| `licensed_vehicles_quarterly` | local authority × quarter | Optional, from gov.uk VEH0105 (quarterly; latest end June 2026). For the long-term trend only |
+| `licensed_vehicles_quarterly` | local authority × quarter | Not needed while we run only hourly and daily models. VEH0105 is quarterly; latest end June 2026 |
 
 History: from 2018-01-01 to match task data. The API keeps only a rolling
 10 years (on 20 Nov 2026 the earliest date it accepts is 20 Nov 2016), so we
@@ -212,8 +212,8 @@ a value can be used only once it has been published.
   earlier `TR_RATIO_DOFLAG1`. With WebTRIS it is one to two months old.
 * Never a same-day value for D ≥ 1.
 
-For medium and long-term models, the monthly ratio and the flow-per-licensed-vehicle
-trend are the useful signals.
+We run hourly and daily models only, so the feature has to help those. There are no
+monthly or longer-term models to make use of a value that arrives late.
 
 **The value test (TB-401) runs twice**, with its rules written down before it runs:
 1. *Daily feed:* as if each day's data arrived the next day. This measures what
@@ -270,8 +270,8 @@ tier; on Azure it needs the Premium tier).
 
 **3. Data arrives a month late, and is paused.** Confirmed: WebTRIS uploads
 monthly, "a month in arrears", and has published nothing after 30 June 2026.
-A daily feature cannot come from WebTRIS. It can still help training, monthly
-models and the value test.
+A daily feature cannot come from WebTRIS. It can still help training and the
+value test.
 
 **4. API address: confirmed.** `webtris.nationalhighways.co.uk/api/v1.0`, the
 old Highways England address and the R tool's `apptris-a-uks.azurewebsites.net`
@@ -403,9 +403,9 @@ Only if the daily version of the value test shows a gain. In order of fit:
 3. What do we do for Wales, Northern Ireland and Scotland? **For now, NULL.** No
    open daily counts exist. Ask Transport Scotland (transtat@transport.gov.scot)
    whether it shares its 1,500 counters; otherwise a commercial speed feed.
-4. Do we need licensed vehicles at all, or is the ratio to normal enough?
-   **Suggest leaving them out of the first build.** Normals rebuilt each year
-   already remove most of the long-term trend. VEH0105 stays available (quarterly).
+4. ~~Do we need licensed vehicles at all, or is the ratio to normal enough?~~
+   **Answered: no.** They only help long-term models, and we run hourly and daily
+   models only. VEH0105 stays available (quarterly) if that changes.
 5. ~~Which reference window do we use for normals?~~ **Answered:** the three
    previous years, rebuilt each year, leaving out COVID, bank holidays and faulty days.
 6. Is a continuous feed worth getting? Decided by the daily version of the value test.
@@ -430,7 +430,7 @@ Only if the daily version of the value test shows a gain. In order of fit:
 | TB-203 | `traffic_flow_15min` backfill, then a monthly load of only new data, with `traffic_load_log` | TB-202 |
 | TB-204 | `traffic_flow_hourly` | TB-203 |
 | TB-205 | `traffic_flow_normals_hourly`: three previous years, rebuilt each year | TB-204 |
-| TB-206 | `licensed_vehicles_quarterly` (optional) | TB-102 |
+| TB-206 | `licensed_vehicles_quarterly`: not needed while we run only hourly and daily models | TB-102 |
 | **Aggregation** | | |
 | TB-301 | `partition_temporal_day` in `dbreferences` | none |
 | TB-302 | `build_traffic_features` (region + period parameters), with `TR_AVAILABLE_FROM` | TB-205, TB-301 |

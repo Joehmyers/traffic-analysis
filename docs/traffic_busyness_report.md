@@ -222,13 +222,13 @@ flowchart TD
     gate -- yes --> s2 --> s3
 ```
 
-The test needs nothing new from National Highways, so it can run during the pause. The build waits for the restart, because the rebuilt WebTRIS may change its address or format. If the as-published run also lowers error, keep a monthly WebTRIS feature for longer-term models either way.
+The test needs nothing new from National Highways, so it can run during the pause. The build waits for the restart, because the rebuilt WebTRIS may change its address or format. If the as-published run also cuts error, the WebTRIS feature is worth using in the hourly and daily models even without NTIS.
 
 ## The sample
 
 Pull daily totals for every English counter from 1 January 2018 to 29 June 2026, with each counter's daily quality, and keep only complete days. It is free and takes 4 to 6 hours, unattended.
 
-- **What:** WebTRIS's monthly report gives each counter's total for every day. One request returned 5 counters for 18 months in under 2 seconds.
+- **What:** WebTRIS's monthly report gives each counter's total for every day. One request returned 5 counters for 18 months in under 2 seconds. Daily totals test the daily models first. The hourly models need hourly counts from the 15-minute data, a much bigger pull, made only if the daily test shows promise.
 - **Date range:** the test window runs September 2025 to June 2026. The model also needs the feature in its training years, and each year's normals need the three years before, so starting in 2018 covers training from 2021. 29 June 2026 is the last complete day.
 - **Complete days:** keep days with quality of 90% or more. In a 5-counter sample, 118 of 2,549 days had no total.
 - **Effort and size:** about 1,200 requests for daily totals and 11,000 small requests for quality. Trimmed to counter, date, total and quality, the file is a few hundred MB.

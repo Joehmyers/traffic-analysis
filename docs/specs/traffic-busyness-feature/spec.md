@@ -56,7 +56,7 @@ It delivers four things:
 - A production feature for D+0 to D+7. It needs a daily source, and the value test decides whether one is worth getting.
 - NTIS or any commercial feed (TB-502, a separate spec).
 - Wales, Scotland and Northern Ireland, which stay NULL.
-- Licensed vehicles (VEH0105). This is optional, and suggested for later.
+- Licensed vehicles (VEH0105). They only help long-term models, and we run hourly and daily models only.
 - Demand weighting (TB-501).
 - `TR_SPEED_RATIO`. Average speed is stored so it can be added later.
 - Any filling of missing data.
