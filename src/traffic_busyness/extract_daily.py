@@ -153,12 +153,14 @@ def run_queue(db, label, todo, submit, record, total_done, total):
         raise SystemExit(f"{consecutive} failures in a row. Check the network and run again to resume.")
 
 
-def load_sites(db):
+def load_sites(db, active_only):
     if db.execute("SELECT 1 FROM sites LIMIT 1").fetchone():
         return
     print("Fetching site list", flush=True)
     log = []
     sites = get("sites", log, "sites")["sites"]
+    if active_only:
+        sites = [s for s in sites if s["Status"] == "Active"]
     with db:
         db.executemany("INSERT OR IGNORE INTO sites VALUES (?,?,?,?,?,?)",
                        [(s["Id"], s["Name"], s["Description"], s["Status"], s["Latitude"],
@@ -218,6 +220,8 @@ def main():
     parser.add_argument("--db", type=Path, default=Path("data/webtris-daily/webtris_daily.sqlite"))
     parser.add_argument("--start", default="2018-01")
     parser.add_argument("--end", default=date.today().strftime("%Y-%m"))
+    parser.add_argument("--active-only", action="store_true",
+                        help="load only Active sites; applies when the database is first created")
     parser.add_argument("--max-sites", type=int, help="trial run: keep only the first N site IDs")
     parser.add_argument("--export", type=Path, help="write daily_totals to this CSV and exit")
     args = parser.parse_args()
@@ -229,7 +233,7 @@ def main():
     if args.export:
         export_csv(db, args.export)
         return
-    load_sites(db)
+    load_sites(db, args.active_only)
     if args.max_sites:
         db.execute("DELETE FROM sites WHERE site_id NOT IN (SELECT site_id FROM sites "
                    "WHERE status = 'Active' ORDER BY CAST(site_id AS INTEGER) LIMIT ?)",
