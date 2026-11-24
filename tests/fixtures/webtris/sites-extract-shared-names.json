@@ -1,0 +1,67 @@
+{
+  "sites": [
+    {
+      "Id": "5688",
+      "Guid": null,
+      "Name": "M602/6051A",
+      "Description": "MIDAS site at M602/6051A priority 1 on link 115042101; GPS Ref: 379545;398603; Eastbound",
+      "Longitude": -2.30971169539053,
+      "Latitude": 53.4837600708868,
+      "Status": "Active"
+    },
+    {
+      "Id": "7572",
+      "Guid": null,
+      "Name": "5597/1",
+      "Description": "TMU Site 5597/1 on link A303 eastbound between A338 and A342; GPS Ref: 427246;144691; Eastbound",
+      "Longitude": -1.61140725837606,
+      "Latitude": 51.2007839503875,
+      "Status": "Active"
+    },
+    {
+      "Id": "14034",
+      "Guid": null,
+      "Name": "5597/1",
+      "Description": "TMU Site 5597/1 on link A303 eastbound between A338 and A342; GPS Ref: 427246;144691; Eastbound",
+      "Longitude": -1.61140725837606,
+      "Latitude": 51.2007839503875,
+      "Status": "Inactive"
+    },
+    {
+      "Id": "7573",
+      "Guid": null,
+      "Name": "5598/1",
+      "Description": "TMU Site 5598/1 on link A303 westbound between A342 and A338; GPS Ref: 425474;144241; Westbound",
+      "Longitude": -1.636800323151,
+      "Latitude": 51.196818982529,
+      "Status": "Active"
+    },
+    {
+      "Id": "14028",
+      "Guid": null,
+      "Name": "5598/1",
+      "Description": "TMU Site 5598/1 on link A303 westbound between A342 and A338; GPS Ref: 425474;144241; Westbound",
+      "Longitude": -1.636800323151,
+      "Latitude": 51.196818982529,
+      "Status": "Inactive"
+    },
+    {
+      "Id": "7570",
+      "Guid": null,
+      "Name": "5600/1",
+      "Description": "TMU Site 5600/1 on link A303 westbound between A34 and B3048; GPS Ref: 443903;142556; Westbound",
+      "Longitude": -1.3732712098847,
+      "Latitude": 51.1805534056008,
+      "Status": "Active"
+    },
+    {
+      "Id": "14015",
+      "Guid": null,
+      "Name": "5600/1",
+      "Description": "TMU Site 5600/1 on link A303 westbound between A34 and B3048; GPS Ref: 443903;142556; Westbound",
+      "Longitude": -1.3732712098847,
+      "Latitude": 51.1805534056008,
+      "Status": "Inactive"
+    }
+  ]
+}
